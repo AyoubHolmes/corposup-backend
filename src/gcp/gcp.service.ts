@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Storage } from '@google-cloud/storage';
 import { Readable } from 'stream';
 
@@ -7,10 +7,6 @@ export class GcpService {
   bucket = new Storage({
     keyFilename: process.env.CORPOSUP_GCP_KEY,
   }).bucket(process.env.PRODUCTS_BUCKET_NAME);
-
-  createBucket() {
-    return 'create bucket';
-  }
 
   async uploadFile(
     file: Express.Multer.File,
@@ -55,7 +51,6 @@ export class GcpService {
       try {
         folderName;
         const { originalname } = file;
-
         const fileRef = this.bucket.file(originalname);
         const fileStream = new Readable();
         fileStream.push(file.buffer);
@@ -67,6 +62,7 @@ export class GcpService {
         });
         await new Promise<void>((resolve, reject) => {
           fileUpload.on('error', (error) => {
+            console.log(error);
             throw error;
           });
 

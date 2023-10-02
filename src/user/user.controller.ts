@@ -73,7 +73,7 @@ export class UserController {
     return await this.userService.getRegisteredProducts(user);
   }
 
-  @Put('/savedProducts')
+  @Put('/savedProducts/:productId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   async saveProduct(
     @Param('productId') productId: string,

@@ -39,6 +39,12 @@ export class ProductController {
   ) {
     return await this.productService.create(createProductDto, user, pictures);
   }
+
+  @Get('/label')
+  async findByCategoryLabel(@Query('categoryLabel') categoryLabel?: string) {
+    return await this.productService.findByCategoryLabel(categoryLabel);
+  }
+
   @Get()
   async findByCategoryAndCity(
     @Query('categoryId') categoryId?: string,

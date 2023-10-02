@@ -1,26 +1,91 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateShippingInformationDto } from './dto/create-shipping-information.dto';
 import { UpdateShippingInformationDto } from './dto/update-shipping-information.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ShippingInformation } from './entities/shipping-information.entity';
+import { Repository } from 'typeorm';
+import { StoreService } from 'src/store/store.service';
+import { UserService } from 'src/user/user.service';
+import { IUser } from 'src/user/interfaces/user.interface';
 
 @Injectable()
 export class ShippingInformationService {
-  create(createShippingInformationDto: CreateShippingInformationDto) {
-    return 'This action adds a new shippingInformation';
+  constructor(
+    @InjectRepository(ShippingInformation)
+    private shippingInformationRepository: Repository<ShippingInformation>,
+    @Inject(UserService) private readonly userService: UserService,
+    @Inject(StoreService) private readonly storeService: StoreService,
+  ) {}
+  async create(
+    createShippingInformationDto: CreateShippingInformationDto,
+  ): Promise<ShippingInformation> {
+    const registeringUser = await this.userService.findOneById(
+      createShippingInformationDto.userId,
+    );
+    const store = await this.storeService.findOne(
+      createShippingInformationDto.storeId,
+    );
+    if (registeringUser && store)
+      return await this.shippingInformationRepository.save({
+        ...createShippingInformationDto,
+        store,
+        registeringUser,
+      });
+    throw new BadRequestException();
   }
 
-  findAll() {
-    return `This action returns all shippingInformation`;
+  async findMyShippingServices(user: IUser, id?: string) {
+    if (id)
+      return await this.shippingInformationRepository.find({
+        where: {
+          store: {
+            id,
+          },
+          registeringUser: {
+            id: user.id,
+          },
+        },
+        relations: ['store'],
+      });
+    return await this.shippingInformationRepository.find({
+      where: {
+        registeringUser: {
+          id: user.id,
+        },
+      },
+      relations: ['store'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shippingInformation`;
+  async findOne(id: string): Promise<ShippingInformation> {
+    return await this.shippingInformationRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateShippingInformationDto: UpdateShippingInformationDto) {
-    return `This action updates a #${id} shippingInformation`;
+  async update(
+    id: string,
+    updateShippingInformationDto: UpdateShippingInformationDto,
+  ) {
+    const shippingMethod = await this.shippingInformationRepository.find({
+      where: { id },
+    });
+    if (shippingMethod)
+      return await this.shippingInformationRepository.save({
+        ...shippingMethod,
+        ...updateShippingInformationDto,
+      });
+    throw new NotFoundException();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shippingInformation`;
+  async remove(id: string) {
+    return await this.shippingInformationRepository.delete({
+      id,
+    });
   }
 }

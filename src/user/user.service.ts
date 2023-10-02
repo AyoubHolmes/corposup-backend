@@ -17,11 +17,11 @@ import {
 import { User } from './entities/user.entity';
 import * as crypto from 'crypto';
 import { IUser } from './interfaces/user.interface';
-import { ProductService } from 'src/product/product.service';
+// import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class UserService {
-  private readonly productService: ProductService;
+  // private readonly productService: ProductService;
 
   constructor(
     @InjectRepository(User)
@@ -229,7 +229,7 @@ export class UserService {
     try {
       const selectedUser: User = await this.userRepository.findOne({
         where: { id: user.id },
-        relations: ['product'],
+        relations: ['savedProducts'],
       });
       return selectedUser.savedProducts;
     } catch (err) {
@@ -255,9 +255,9 @@ export class UserService {
         where: { id },
       });
 
-      const product = await this.productService.findOne(productId);
+      // const product = await this.productService.findOne(productId);
 
-      user.savedProducts.push(product);
+      // user.savedProducts.push(product);
 
       await this.userRepository.save(user);
       return;
@@ -272,9 +272,9 @@ export class UserService {
         where: { id },
       });
 
-      const product = await this.productService.findOne(productId);
+      // const product = await this.productService.findOne(productId);
 
-      user.savedProducts.push(product);
+      // user.savedProducts.push(product);
 
       await this.userRepository.save(user);
       return;

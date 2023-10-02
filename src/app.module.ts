@@ -11,7 +11,6 @@ import { DealsModule } from './deals/deals.module';
 import { GcpModule } from './gcp/gcp.module';
 import { CityModule } from './city/city.module';
 import { StoreModule } from './store/store.module';
-import { ProductSpecsModule } from './product-specs/product-specs.module';
 import { ShippingInformationModule } from './shipping-information/shipping-information.module';
 
 @Module({
@@ -29,7 +28,6 @@ import { ShippingInformationModule } from './shipping-information/shipping-infor
     CategoryModule,
     CityModule,
     StoreModule,
-    ProductSpecsModule,
     ShippingInformationModule,
   ],
   providers: [],

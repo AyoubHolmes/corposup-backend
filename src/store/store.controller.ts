@@ -42,6 +42,13 @@ export class StoreController {
     return this.storeService.findAll();
   }
 
+  @Get('me')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
+  async findVendorStores(@User() user: IUser) {
+    return await this.storeService.findVendorStores(user);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.storeService.findOne(id);

@@ -13,5 +13,6 @@ import { UserService } from 'src/user/user.service';
   imports: [TypeOrmModule.forFeature([Store, User]), GcpModule, UserModule],
   controllers: [StoreController],
   providers: [StoreService, GcpService, UserService],
+  exports: [StoreService],
 })
 export class StoreModule {}

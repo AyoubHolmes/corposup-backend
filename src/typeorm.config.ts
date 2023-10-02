@@ -10,6 +10,8 @@ import { Product } from './product/entities/product.entity';
 import { User } from './user/entities/user.entity';
 import { City } from './city/entities/city.entity';
 import { Store } from './store/entities/store.entity';
+import { ProductSpec } from './product-specs/entities/product-spec.entity';
+import { ShippingInformation } from './shipping-information/entities/shipping-information.entity';
 
 export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
@@ -26,7 +28,16 @@ export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
       database: configService.get<string>('POSTGRES_DB'),
       autoLoadEntities: true,
       synchronize: true,
-      entities: [Category, Deal, Product, User, City, Store],
+      entities: [
+        Category,
+        Deal,
+        Product,
+        User,
+        City,
+        Store,
+        ProductSpec,
+        ShippingInformation,
+      ],
     };
     return config;
   },

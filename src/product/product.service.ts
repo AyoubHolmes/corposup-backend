@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
   Inject,
@@ -16,16 +17,19 @@ import { CategoryService } from 'src/category/category.service';
 import { StoreService } from 'src/store/store.service';
 import { ProductFilters } from './dto/filters-product.dto';
 import { CityService } from 'src/city/city.service';
+import { ShippingInformationService } from 'src/shipping-information/shipping-information.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private productRepository: Repository<Product>,
-    @Inject(UserService) private readonly userService: UserService,
+    @Inject(StoreService) private readonly storeService: StoreService,
     @Inject(GcpService) private readonly gcpService: GcpService,
     @Inject(CategoryService) private readonly categoryService: CategoryService,
-    @Inject(StoreService) private readonly storeService: StoreService,
+    @Inject(UserService) private readonly userService: UserService,
     @Inject(CityService) private readonly cityService: CityService,
+    @Inject(ShippingInformationService)
+    private readonly ShippingInformationService: ShippingInformationService,
   ) {}
 
   async create(
@@ -35,12 +39,31 @@ export class ProductService {
   ) {
     const registeringUser = await this.userService.findOneById(user.id);
     const picturesUrls = await this.gcpService.uploadMultipleFiles(pictures);
+    // const picturesUrls = [];
     const category = await this.categoryService.findOne(
       createProductDto.categoryId,
     );
     const city = await this.cityService.findOne(createProductDto.city);
     const store = await this.storeService.findOne(createProductDto.storeId);
-    if (registeringUser && picturesUrls && category && store && city)
+    const shippingInformation = createProductDto.shippingInfosId
+      ? await this.ShippingInformationService.findOne(
+          createProductDto.shippingInfosId,
+        )
+      : {
+          shippingMethod: createProductDto.shippingMethod,
+          shippingCost: createProductDto.shippingCost,
+          estimatedDeliveryPeriod: createProductDto.estimatedDeliveryPeriod,
+          metric: createProductDto.metric,
+          carrier: createProductDto.carrier,
+          registeringUser: await this.userService.findOneById(user.id),
+          store,
+        };
+
+    if (registeringUser && picturesUrls && category && store && city) {
+      const specs = createProductDto.keys.map((key, index) => ({
+        key,
+        value: createProductDto.values[index],
+      }));
       return await this.productRepository.save({
         ...createProductDto,
         category,
@@ -48,7 +71,10 @@ export class ProductService {
         pictures: picturesUrls,
         registeringUser,
         store,
+        specs,
+        shippingInformation,
       });
+    }
     throw new BadRequestException();
   }
 
@@ -64,7 +90,41 @@ export class ProductService {
         };
     return await this.productRepository.find({
       where: { ...condition },
-      relations: ['store', 'city'],
+      relations: [
+        'store',
+        'city',
+        'specs',
+        'shippingInformation',
+        'category',
+        'category.parent',
+      ],
+    });
+  }
+
+  async findByCategoryLabel(label: string) {
+    return await this.productRepository.find({
+      where: [
+        {
+          category: {
+            label,
+          },
+        },
+        {
+          category: {
+            parent: {
+              label,
+            },
+          },
+        },
+      ],
+      relations: [
+        'store',
+        'city',
+        'specs',
+        'shippingInformation',
+        'category',
+        'category.parent',
+      ],
     });
   }
 
@@ -78,15 +138,33 @@ export class ProductService {
           id: city,
         })),
       },
-      relations: ['store', 'city', 'category'],
+      relations: [
+        'store',
+        'city',
+        'category',
+        'specs',
+        'shippingInformation',
+        'category',
+        'category.parent',
+      ],
     });
   }
 
   async findOne(id: string) {
-    return await this.productRepository.findOne({
+    const product = await this.productRepository.findOne({
       where: { id },
-      relations: ['store', 'city', 'category'],
+      relations: [
+        'store',
+        'city',
+        'category',
+        'specs',
+        'shippingInformation',
+        'category',
+        'category.parent',
+      ],
     });
+    if (product) return product;
+    throw new BadRequestException('Product not found');
   }
 
   async update(id: string, updateProductDto: UpdateProductDto, user: IUser) {
@@ -117,7 +195,15 @@ export class ProductService {
           id: user.id,
         },
       },
-      relations: ['store', 'city', 'category'],
+      relations: [
+        'store',
+        'city',
+        'category',
+        'specs',
+        'shippingInformation',
+        'category',
+        'category.parent',
+      ],
     });
     if (product)
       return await this.productRepository.delete({
@@ -133,7 +219,15 @@ export class ProductService {
           id: user.id,
         },
       },
-      relations: ['category', 'deals', 'store'],
+      relations: [
+        'category',
+        'deals',
+        'store',
+        'specs',
+        'shippingInformation',
+        'category',
+        'category.parent',
+      ],
     });
   }
 }

@@ -6,6 +6,8 @@ import {
   IsUUID,
   Length,
 } from 'class-validator';
+import { CreateShippingInformationDto } from 'src/shipping-information/dto/create-shipping-information.dto';
+import { PERIOD_METRICS } from 'src/shipping-information/entities/shipping-information.entity';
 
 export class CreateProductDto {
   @IsString()
@@ -26,7 +28,6 @@ export class CreateProductDto {
   @IsNotEmpty()
   storeId: string;
 
-  // @IsNumber()
   @IsOptional()
   price: number;
 
@@ -35,4 +36,33 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   city: string;
+
+  @IsString({ each: true, message: 'TEST 1' })
+  keys: string[];
+
+  @IsString({ each: true, message: 'TEST 2' })
+  values: string[];
+
+  @IsOptional()
+  shippingInfosId?: string;
+
+  @IsOptional()
+  @IsString()
+  shippingMethod: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  shippingCost: number;
+
+  @IsOptional()
+  @IsNotEmpty()
+  estimatedDeliveryPeriod: number;
+
+  @IsOptional()
+  @IsNotEmpty()
+  metric: PERIOD_METRICS;
+
+  @IsOptional()
+  @IsString()
+  carrier: string;
 }

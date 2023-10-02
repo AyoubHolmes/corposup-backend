@@ -43,6 +43,15 @@ export class StoreService {
     return await this.storeRepository.find();
   }
 
+  async findVendorStores(user: IUser) {
+    return await this.storeRepository.find({
+      where: {
+        user: { id: user.id },
+      },
+      relations: ['products', 'products.deals'],
+    });
+  }
+
   async findOne(id: string) {
     return await this.storeRepository
       .findOne({

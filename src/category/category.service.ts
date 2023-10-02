@@ -33,7 +33,14 @@ export class CategoryService {
   async findOne(id: string) {
     return await this.categoryRepository.findOne({
       where: { id },
-      relations: ['parent'],
+      relations: ['parent', 'products'],
+    });
+  }
+
+  async findOneByLabel(label: string) {
+    return await this.categoryRepository.findOne({
+      where: { label },
+      relations: ['childs'],
     });
   }
 

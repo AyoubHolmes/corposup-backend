@@ -18,13 +18,15 @@ export enum DealStatus {
 @Entity()
 export class Deal {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
   @ManyToOne(() => Product, (product) => product.id, { nullable: false })
   product: Product;
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
   user: User;
   @Column({ type: 'enum', enum: DealStatus, default: DealStatus.PENDING })
   status: DealStatus;
+  @Column()
+  description: string;
   @CreateDateColumn({
     nullable: true,
     type: 'timestamp',

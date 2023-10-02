@@ -1,7 +1,9 @@
+import { Product } from 'src/product/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -32,4 +34,10 @@ export class Category {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt?: Date;
+
+  @OneToMany(() => Product, (product) => product.category, {
+    nullable: true,
+  })
+  // @JoinColumn({ name: 'productId' })
+  products: Product[];
 }

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -29,6 +30,11 @@ export class CategoryController {
   @Get()
   async findAll() {
     return await this.categoryService.findAll();
+  }
+
+  @Get('label')
+  async findOneByLabel(@Query('label') label: string) {
+    return await this.categoryService.findOneByLabel(label);
   }
 
   @Get(':id')

@@ -3,27 +3,32 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { UserModule } from 'src/user/user.module';
 import { GcpModule } from 'src/gcp/gcp.module';
 import { GcpService } from 'src/gcp/gcp.service';
-import { CategoryModule } from 'src/category/category.module';
 import { CategoryService } from 'src/category/category.service';
 import { Category } from 'src/category/entities/category.entity';
 import { Store } from 'src/store/entities/store.entity';
-import { StoreModule } from 'src/store/store.module';
 import { StoreService } from 'src/store/store.service';
-import { CityModule } from 'src/city/city.module';
 import { City } from 'src/city/entities/city.entity';
 import { CityService } from 'src/city/city.service';
+import { ProductSpecsService } from 'src/product-specs/product-specs.service';
+import { ProductSpec } from 'src/product-specs/entities/product-spec.entity';
+import { ShippingInformationService } from 'src/shipping-information/shipping-information.service';
+import { ShippingInformation } from 'src/shipping-information/entities/shipping-information.entity';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     GcpModule,
-    TypeOrmModule.forFeature([Product, Category, Store, City]),
+    TypeOrmModule.forFeature([
+      Product,
+      Category,
+      Store,
+      City,
+      ProductSpec,
+      ShippingInformation,
+    ]),
     UserModule,
-    CategoryModule,
-    StoreModule,
-    CityModule,
   ],
   providers: [
     ProductService,
@@ -31,6 +36,8 @@ import { CityService } from 'src/city/city.service';
     CategoryService,
     StoreService,
     CityService,
+    ProductSpecsService,
+    ShippingInformationService,
   ],
   controllers: [ProductController],
   exports: [ProductService],

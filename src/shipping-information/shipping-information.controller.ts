@@ -1,34 +1,73 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { ShippingInformationService } from './shipping-information.service';
 import { CreateShippingInformationDto } from './dto/create-shipping-information.dto';
 import { UpdateShippingInformationDto } from './dto/update-shipping-information.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt.guard';
+import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { Roles } from 'src/user/decorators/role.decorator';
+import { Role } from 'src/user/entities/user.entity';
+import { User } from 'src/user/decorators/user.decorator';
+import { IUser } from 'src/user/interfaces/user.interface';
 
 @Controller('shipping-information')
 export class ShippingInformationController {
-  constructor(private readonly shippingInformationService: ShippingInformationService) {}
+  constructor(
+    private readonly shippingInformationService: ShippingInformationService,
+  ) {}
 
   @Post()
-  create(@Body() createShippingInformationDto: CreateShippingInformationDto) {
-    return this.shippingInformationService.create(createShippingInformationDto);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
+  create(
+    @Body() createShippingInformationDto: CreateShippingInformationDto,
+    @User() user: IUser,
+  ) {
+    return this.shippingInformationService.create({
+      ...createShippingInformationDto,
+      userId: user.id,
+    });
   }
 
-  @Get()
-  findAll() {
-    return this.shippingInformationService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shippingInformationService.findOne(+id);
+  @Get('')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
+  async findMyShippingServices(
+    @User() user: IUser,
+    @Query('storeId') storeId?: string,
+  ) {
+    return await this.shippingInformationService.findMyShippingServices(
+      user,
+      storeId,
+    );
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShippingInformationDto: UpdateShippingInformationDto) {
-    return this.shippingInformationService.update(+id, updateShippingInformationDto);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
+  update(
+    @Param('id') id: string,
+    @Body() updateShippingInformationDto: UpdateShippingInformationDto,
+  ) {
+    return this.shippingInformationService.update(
+      id,
+      updateShippingInformationDto,
+    );
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.VENDOR)
   remove(@Param('id') id: string) {
-    return this.shippingInformationService.remove(+id);
+    return this.shippingInformationService.remove(id);
   }
 }
