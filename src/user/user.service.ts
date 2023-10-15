@@ -124,24 +124,33 @@ export class UserService {
   }
 
   async getProfileInfo(id: string) {
-    const user: User = await this.userRepository
-      .createQueryBuilder('users')
-      .select([
-        'users.id',
-        'users.avatar',
-        'users.firstname',
-        'users.lastname',
-        'users.email',
-        'users.contact',
-        'users.role',
-        'users.rc',
-        'users.ice',
-      ])
-      .where('users.id = :id', { id })
-      .getOne();
+    // const user: User = await this.userRepository
+    //   .createQueryBuilder('users')
+    //   .select([
+    //     'users.id',
+    //     'users.avatar',
+    //     'users.firstname',
+    //     'users.lastname',
+    //     'users.email',
+    //     'users.contact',
+    //     'users.role',
+    //     'users.rc',
+    //     'users.ice',
+    //     'users.address',
+    //     'users.city',
+    //   ])
+    //   .where('users.id = :id', { id })
+    //   .getOne();
+
+    const user: User = await this.userRepository.findOne({
+      where: { id },
+      relations: ['city'],
+    });
 
     if (!user) throw new NotFoundException('User not found!');
 
+    delete user.password;
+    delete user.salt;
     return user;
   }
 

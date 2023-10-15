@@ -1,3 +1,4 @@
+import { City } from 'src/city/entities/city.entity';
 import { Deal } from 'src/deals/entities/deal.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Store } from 'src/store/entities/store.entity';
@@ -10,6 +11,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 export enum Role {
@@ -56,6 +58,12 @@ export class User {
 
   @Column({ nullable: true })
   rc: string;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @ManyToOne(() => City, (city) => city.id, { nullable: true })
+  city: City;
 
   @CreateDateColumn({
     nullable: true,

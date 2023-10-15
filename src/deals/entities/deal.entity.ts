@@ -27,6 +27,8 @@ export class Deal {
   status: DealStatus;
   @Column()
   description: string;
+  @Column()
+  quantity: number;
   @CreateDateColumn({
     nullable: true,
     type: 'timestamp',

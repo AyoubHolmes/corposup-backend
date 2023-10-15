@@ -5,6 +5,7 @@ import { Deal } from './entities/deal.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { ProductService } from 'src/product/product.service';
+import { IUser } from 'src/user/interfaces/user.interface';
 
 @Injectable()
 export class DealsService {
@@ -25,14 +26,27 @@ export class DealsService {
         product,
         user,
         description: createDealDto.description,
+        quantity: createDealDto.quantity,
       });
   }
 
-  findAll() {
-    return `This action returns all deals`;
+  async findAll() {
+    return await this.dealRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} deal`;
+  async findAllMyDeals(user: IUser) {
+    return await this.dealRepository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+    });
+  }
+
+  async findOne(id: string, userId: string) {
+    return await this.dealRepository.find({
+      where: { id, user: { id: userId } },
+    });
   }
 }
