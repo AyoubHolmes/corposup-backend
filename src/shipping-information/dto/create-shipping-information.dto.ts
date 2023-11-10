@@ -1,14 +1,28 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { PERIOD_METRICS } from '../entities/shipping-information.entity';
 
 export class CreateShippingInformationDto {
   @IsString()
   shippingMethod: string;
-  @IsNotEmpty()
+  @IsOptional()
+  @IsBoolean()
+  isFreeDelivery: boolean;
+  @IsOptional()
+  @IsBoolean()
+  is48HoureFreeDelivery: boolean;
+  @IsNumber()
+  @IsOptional()
   shippingCost: number;
-  @IsNotEmpty()
+  @IsOptional()
+  @IsNumber()
   estimatedDeliveryPeriod: number;
-  @IsNotEmpty()
+  @IsOptional()
   metric: PERIOD_METRICS;
   @IsString()
   carrier: string;

@@ -44,11 +44,11 @@ export class User {
   @Column({ nullable: true })
   salt: string;
 
-  @Column({ nullable: true })
-  avatar: string;
-
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @Column({ nullable: true })
+  avatar: string;
 
   @Column({ nullable: true })
   companyName: string;

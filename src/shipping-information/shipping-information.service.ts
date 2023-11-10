@@ -7,7 +7,10 @@ import {
 import { CreateShippingInformationDto } from './dto/create-shipping-information.dto';
 import { UpdateShippingInformationDto } from './dto/update-shipping-information.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ShippingInformation } from './entities/shipping-information.entity';
+import {
+  PERIOD_METRICS,
+  ShippingInformation,
+} from './entities/shipping-information.entity';
 import { Repository } from 'typeorm';
 import { StoreService } from 'src/store/store.service';
 import { UserService } from 'src/user/user.service';
@@ -30,6 +33,16 @@ export class ShippingInformationService {
     const store = await this.storeService.findOne(
       createShippingInformationDto.storeId,
     );
+    if (
+      createShippingInformationDto.is48HoureFreeDelivery ||
+      createShippingInformationDto.isFreeDelivery
+    ) {
+      createShippingInformationDto.shippingCost = 0;
+      if (createShippingInformationDto.is48HoureFreeDelivery) {
+        createShippingInformationDto.metric = PERIOD_METRICS.DAYS;
+        createShippingInformationDto.estimatedDeliveryPeriod = 2;
+      }
+    }
     if (registeringUser && store)
       return await this.shippingInformationRepository.save({
         ...createShippingInformationDto,

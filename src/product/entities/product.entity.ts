@@ -42,8 +42,11 @@ export class Product {
   @Column({ type: 'enum', enum: UTILIZATION, default: UTILIZATION.NEW })
   utilization: UTILIZATION;
 
-  @ManyToOne(() => City, (city) => city.id, { nullable: false })
+  @ManyToOne(() => City, (city) => city.id, { nullable: true })
   city: City;
+
+  @Column({ nullable: true })
+  cityName: string;
 
   @Column({ type: 'text', array: true, default: [] })
   pictures: string[];

@@ -12,6 +12,7 @@ import { GcpModule } from './gcp/gcp.module';
 import { CityModule } from './city/city.module';
 import { StoreModule } from './store/store.module';
 import { ShippingInformationModule } from './shipping-information/shipping-information.module';
+import { WhitelistModule } from './whitelist/whitelist.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ShippingInformationModule } from './shipping-information/shipping-infor
     CityModule,
     StoreModule,
     ShippingInformationModule,
+    WhitelistModule,
   ],
   providers: [],
   controllers: [],
