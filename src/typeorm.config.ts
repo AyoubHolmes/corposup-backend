@@ -12,6 +12,7 @@ import { City } from './city/entities/city.entity';
 import { Store } from './store/entities/store.entity';
 import { ProductSpec } from './product-specs/entities/product-spec.entity';
 import { ShippingInformation } from './shipping-information/entities/shipping-information.entity';
+import { Whitelist } from './whitelist/entities/whitelist.entity';
 
 export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
@@ -37,6 +38,7 @@ export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
         Store,
         ProductSpec,
         ShippingInformation,
+        Whitelist,
       ],
     };
     return config;

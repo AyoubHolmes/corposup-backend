@@ -12,12 +12,11 @@ export class CityService {
   ) {}
 
   async create(city: CreateCity) {
-    const oldRecords = await this.cityRepository.find();
-    const cityRecord = oldRecords?.find(
-      (record) => record.label.toLowerCase() === city.label.toLowerCase(),
-    );
-    if (!cityRecord) return await this.cityRepository.save(city);
-    throw new BadRequestException('Already exists');
+    try {
+      return await this.cityRepository.save(city);
+    } catch (error) {
+      throw new BadRequestException('Already exists');
+    }
   }
 
   async findAll() {

@@ -33,6 +33,12 @@ export class ShippingInformation {
   @Column({ nullable: false })
   carrier: string;
 
+  @Column({ nullable: true, default: false })
+  is48HoureFreeDelivery: boolean;
+
+  @Column({ nullable: true, default: false })
+  isFreeDelivery: boolean;
+
   @ManyToOne(() => Store, (store) => store.id, { nullable: false })
   store: Store;
 

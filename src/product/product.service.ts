@@ -18,6 +18,8 @@ import { StoreService } from 'src/store/store.service';
 import { ProductFilters } from './dto/filters-product.dto';
 import { CityService } from 'src/city/city.service';
 import { ShippingInformationService } from 'src/shipping-information/shipping-information.service';
+import { City } from 'src/city/entities/city.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class ProductService {
@@ -37,13 +39,16 @@ export class ProductService {
     user: IUser,
     pictures: Express.Multer.File[],
   ) {
+    console.log(createProductDto);
     const registeringUser = await this.userService.findOneById(user.id);
     const picturesUrls = await this.gcpService.uploadMultipleFiles(pictures);
-    // const picturesUrls = [];
     const category = await this.categoryService.findOne(
       createProductDto.categoryId,
     );
-    const city = await this.cityService.findOne(createProductDto.city);
+    let city;
+    console.log('isUUID(createProductDto.city)', isUUID(createProductDto.city));
+    if (isUUID(createProductDto.city))
+      city = await this.cityService.findOne(createProductDto.city);
     const store = await this.storeService.findOne(createProductDto.storeId);
     const shippingInformation = createProductDto.shippingInfosId
       ? await this.ShippingInformationService.findOne(
@@ -58,21 +63,35 @@ export class ProductService {
           registeringUser: await this.userService.findOneById(user.id),
           store,
         };
-
-    if (registeringUser && picturesUrls && category && store && city) {
+    if (registeringUser && picturesUrls && category && store) {
+      console.log('ENTERED');
       const specs = createProductDto.keys.map((key, index) => ({
         key,
         value: createProductDto.values[index],
       }));
+      if (isUUID(createProductDto.city) && city) {
+        delete createProductDto.city;
+        return await this.productRepository.save({
+          ...createProductDto,
+          category,
+          city,
+          pictures: picturesUrls,
+          registeringUser,
+          store,
+          specs,
+          shippingInformation,
+        });
+      }
       return await this.productRepository.save({
         ...createProductDto,
+        city: undefined,
         category,
-        city,
         pictures: picturesUrls,
         registeringUser,
         store,
         specs,
         shippingInformation,
+        cityName: createProductDto.city,
       });
     }
     throw new BadRequestException();
@@ -129,15 +148,34 @@ export class ProductService {
   }
 
   async findByCategoriesAndCities(filters: ProductFilters) {
+    console.log(
+      'test',
+      !filters.is48HoureFreeDelivery && !filters.isFreeDelivery,
+    );
     return await this.productRepository.find({
-      where: {
-        category: filters.categories.map((category) => ({
-          id: category,
-        })),
-        city: filters.cities.map((city) => ({
-          id: city,
-        })),
-      },
+      where:
+        !filters.is48HoureFreeDelivery && !filters.isFreeDelivery
+          ? {
+              category: filters.categories.map((category) => ({
+                id: category,
+              })),
+              city: filters.cities.map((city) => ({
+                id: city,
+              })),
+            }
+          : {
+              category: filters.categories.map((category) => ({
+                id: category,
+              })),
+              city: filters.cities.map((city) => ({
+                id: city,
+              })),
+              shippingInformation: {
+                is48HoureFreeDelivery: filters.is48HoureFreeDelivery,
+                isFreeDelivery:
+                  filters.is48HoureFreeDelivery || filters.isFreeDelivery,
+              },
+            },
       relations: [
         'store',
         'city',

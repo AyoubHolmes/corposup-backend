@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   ConflictException,
-  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -17,12 +16,9 @@ import {
 import { User } from './entities/user.entity';
 import * as crypto from 'crypto';
 import { IUser } from './interfaces/user.interface';
-// import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class UserService {
-  // private readonly productService: ProductService;
-
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,

@@ -1,12 +1,10 @@
 import {
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
   Length,
 } from 'class-validator';
-import { CreateShippingInformationDto } from 'src/shipping-information/dto/create-shipping-information.dto';
 import { PERIOD_METRICS } from 'src/shipping-information/entities/shipping-information.entity';
 
 export class CreateProductDto {
