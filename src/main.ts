@@ -15,7 +15,8 @@ async function bootstrap() {
   });
   app.use(cookieParser());
   app.enableCors({
-    origin: 'https://corposup-front.vercel.app/',
+    // origin: true,
+    origin: 'https://corposup-front.vercel.app',
     credentials: true,
   });
 
