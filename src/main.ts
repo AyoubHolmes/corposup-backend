@@ -7,11 +7,11 @@ import * as fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    httpsOptions: {
-      key: fs.readFileSync('./key.pem'),
-      cert: fs.readFileSync('./cert.pem'),
-      passphrase: 'corposup',
-    },
+    // httpsOptions: {
+    //   key: fs.readFileSync('./key.pem'),
+    //   cert: fs.readFileSync('./cert.pem'),
+    //   passphrase: 'corposup',
+    // },
   });
   app.use(cookieParser());
   app.enableCors({

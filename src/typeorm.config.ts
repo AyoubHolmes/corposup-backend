@@ -13,6 +13,11 @@ import { Store } from './store/entities/store.entity';
 import { ProductSpec } from './product-specs/entities/product-spec.entity';
 import { ShippingInformation } from './shipping-information/entities/shipping-information.entity';
 import { Whitelist } from './whitelist/entities/whitelist.entity';
+// import * as PostgressConnectionStringParser from 'pg-connection-string';
+
+// const connectionOptions = PostgressConnectionStringParser.parse(
+//   process.env.POSTGRES_URL,
+// );
 
 export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
@@ -23,12 +28,13 @@ export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
     const config: TypeOrmModuleOptions = {
       type: 'postgres',
       host: configService.get<string>('POSTGRES_HOST'),
-      port: +configService.get<string>('POSTGRES_PORT'),
+      // port: +configService.get<string>('POSTGRES_PORT'),
       username: configService.get<string>('POSTGRES_USER'),
       password: <string>configService.get<string>('POSTGRES_PASSWORD'),
       database: configService.get<string>('POSTGRES_DB'),
       autoLoadEntities: true,
       synchronize: true,
+      ssl: true,
       entities: [
         Category,
         Deal,
