@@ -11,6 +11,7 @@ import {
 
 export enum DealStatus {
   PENDING = 'pending',
+  SENT = 'sent',
   CLOSED = 'closed',
   REJECTED = 'rejected',
 }

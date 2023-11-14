@@ -13,6 +13,7 @@ import { CityModule } from './city/city.module';
 import { StoreModule } from './store/store.module';
 import { ShippingInformationModule } from './shipping-information/shipping-information.module';
 import { WhitelistModule } from './whitelist/whitelist.module';
+import { DevisModule } from './devis/devis.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { WhitelistModule } from './whitelist/whitelist.module';
     StoreModule,
     ShippingInformationModule,
     WhitelistModule,
+    DevisModule,
   ],
   providers: [],
   controllers: [],
