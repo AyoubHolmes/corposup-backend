@@ -39,9 +39,6 @@ export class ShippingInformation {
   @Column({ nullable: true, default: false })
   isFreeDelivery: boolean;
 
-  @ManyToOne(() => Store, (store) => store.id, { nullable: false })
-  store: Store;
-
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
   registeringUser: User;
 

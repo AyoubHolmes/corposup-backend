@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  Query,
 } from '@nestjs/common';
 import { ShippingInformationService } from './shipping-information.service';
 import { CreateShippingInformationDto } from './dto/create-shipping-information.dto';
@@ -41,14 +40,8 @@ export class ShippingInformationController {
   @Get('')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.VENDOR)
-  async findMyShippingServices(
-    @User() user: IUser,
-    @Query('storeId') storeId?: string,
-  ) {
-    return await this.shippingInformationService.findMyShippingServices(
-      user,
-      storeId,
-    );
+  async findMyShippingServices(@User() user: IUser) {
+    return await this.shippingInformationService.findMyShippingServices(user);
   }
 
   @Patch(':id')

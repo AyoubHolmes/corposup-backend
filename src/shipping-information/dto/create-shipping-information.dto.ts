@@ -28,8 +28,5 @@ export class CreateShippingInformationDto {
   carrier: string;
   @IsOptional()
   @IsUUID()
-  storeId: string;
-  @IsOptional()
-  @IsUUID()
   userId: string;
 }

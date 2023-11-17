@@ -11,7 +11,9 @@ describe('ShippingInformationController', () => {
       providers: [ShippingInformationService],
     }).compile();
 
-    controller = module.get<ShippingInformationController>(ShippingInformationController);
+    controller = module.get<ShippingInformationController>(
+      ShippingInformationController,
+    );
   });
 
   it('should be defined', () => {

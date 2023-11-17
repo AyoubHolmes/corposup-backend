@@ -30,9 +30,7 @@ export class ShippingInformationService {
     const registeringUser = await this.userService.findOneById(
       createShippingInformationDto.userId,
     );
-    const store = await this.storeService.findOne(
-      createShippingInformationDto.storeId,
-    );
+
     if (
       createShippingInformationDto.is48HoureFreeDelivery ||
       createShippingInformationDto.isFreeDelivery
@@ -43,35 +41,21 @@ export class ShippingInformationService {
         createShippingInformationDto.estimatedDeliveryPeriod = 2;
       }
     }
-    if (registeringUser && store)
+    if (registeringUser)
       return await this.shippingInformationRepository.save({
         ...createShippingInformationDto,
-        store,
         registeringUser,
       });
     throw new BadRequestException();
   }
 
-  async findMyShippingServices(user: IUser, id?: string) {
-    if (id)
-      return await this.shippingInformationRepository.find({
-        where: {
-          store: {
-            id,
-          },
-          registeringUser: {
-            id: user.id,
-          },
-        },
-        relations: ['store'],
-      });
+  async findMyShippingServices(user: IUser) {
     return await this.shippingInformationRepository.find({
       where: {
         registeringUser: {
           id: user.id,
         },
       },
-      relations: ['store'],
     });
   }
 

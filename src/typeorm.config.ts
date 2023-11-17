@@ -34,7 +34,7 @@ export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
       database: configService.get<string>('POSTGRES_DB'),
       autoLoadEntities: true,
       synchronize: true,
-      ssl: true,
+      // ssl: true,
       entities: [
         Category,
         Deal,
