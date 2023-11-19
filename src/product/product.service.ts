@@ -199,6 +199,7 @@ export class ProductService {
         'shippingInformation',
         'category',
         'category.parent',
+        'store.user',
       ],
     });
     if (product) return product;
