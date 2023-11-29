@@ -64,11 +64,7 @@ export class CreateUserDto {
   )
   password: string;
 
-  @ApiProperty({
-    description: 'Avatar of the user.',
-    example: 'avatar.png',
-    required: false,
-  })
+  @IsString()
   @IsOptional()
   avatar: string;
 
@@ -80,24 +76,25 @@ export class CreateUserDto {
   @IsNotEmpty()
   role: Role;
 
-  @ApiProperty({
-    description: 'Company name.',
-    example: 'vendor',
-    required: false,
-  })
+  @IsOptional()
+  @IsString()
   companyName: string;
-  @ApiProperty({
-    description: 'ICE of the company.',
-    example: 'vendor',
-    required: false,
-  })
+
+  @IsString()
+  @IsOptional()
+  companyLogo: string;
+
+  @IsOptional()
+  @IsString()
   ice: string;
-  @ApiProperty({
-    description: 'RC of the company.',
-    example: 'vendor',
-    required: false,
-  })
+
+  @IsOptional()
+  @IsString()
   rc: string;
+
+  @IsOptional()
+  @IsString()
+  cityId: string;
 }
 
 export class UpdateUserProfileDto extends PartialType(

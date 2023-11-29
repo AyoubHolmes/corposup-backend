@@ -17,6 +17,17 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum Unit {
+  METER = 'Meter',
+  LITER = 'Liter',
+  POUND = 'Pound',
+  PIECE = 'Piece',
+  KILOGRAM = 'Kilogram',
+  GRAM = 'Gram',
+  SQUARE_METER = 'Square Meter',
+  CUBIC_METER = 'Cubic Meter',
+}
+
 export enum UTILIZATION {
   OLD = 'old',
   NEW = 'new',
@@ -38,6 +49,9 @@ export class Product {
 
   @Column({ nullable: true })
   quantity: number;
+
+  @Column({ type: 'enum', enum: Unit, default: Unit.PIECE })
+  unit: Unit;
 
   @Column({ type: 'enum', enum: UTILIZATION, default: UTILIZATION.NEW })
   utilization: UTILIZATION;

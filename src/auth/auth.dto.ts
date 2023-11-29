@@ -14,4 +14,5 @@ export class registerGoogleDto extends OmitType(CreateUserDto, [
   'companyName',
   'rc',
   'ice',
+  'companyLogo',
 ]) {}

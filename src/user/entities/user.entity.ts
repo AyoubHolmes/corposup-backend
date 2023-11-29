@@ -54,6 +54,9 @@ export class User {
   companyName: string;
 
   @Column({ nullable: true })
+  companyLogo: string;
+
+  @Column({ nullable: true })
   ice: string;
 
   @Column({ nullable: true })

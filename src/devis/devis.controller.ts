@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { CreateDeviDto } from './dto/create.dto';
+import { UpdateDeviDto } from './dto/update.dto';
 import { DevisService } from './devis.service';
-import { CreateDeviDto } from './dto/create-devi.dto';
-import { UpdateDeviDto } from './dto/update-devi.dto';
 
 @Controller('devis')
 export class DevisController {
   constructor(private readonly devisService: DevisService) {}
 
-  @Post()
-  create(@Body() createDeviDto: CreateDeviDto) {
-    return this.devisService.create(createDeviDto);
+  @Post('order')
+  async create(@Body() createDeviDto: CreateDeviDto) {
+    return await this.devisService.create(createDeviDto);
   }
 
   @Get()

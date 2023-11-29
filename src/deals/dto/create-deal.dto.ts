@@ -1,10 +1,6 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateDealDto {
-  @IsString()
-  @IsOptional()
-  userId: string;
-
   @IsString()
   @IsOptional()
   productId: string;
@@ -15,4 +11,9 @@ export class CreateDealDto {
   @IsString()
   @IsOptional()
   description: string;
+}
+
+export class CreateMultipleDealsDto {
+  @IsNotEmpty()
+  deals: CreateDealDto[];
 }

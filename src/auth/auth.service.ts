@@ -1,5 +1,4 @@
 import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
-import { signUpDto } from './auth.dto';
 import { UserService } from 'src/user/user.service';
 import { IUser } from 'src/user/interfaces/user.interface';
 import { Request, Response } from 'express';
@@ -8,6 +7,7 @@ import { JwtAuthPayload } from './auth.interface';
 import { RedisService } from 'src/redis/redis.service';
 import { ConfigService } from '@nestjs/config';
 import { GcpService } from 'src/gcp/gcp.service';
+import { CreateUserDto } from 'src/user/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,14 +20,19 @@ export class AuthService {
   ) {}
 
   async signUp(
-    signupDto: signUpDto,
+    signupDto: CreateUserDto,
     res: Response,
     avatar?: Express.Multer.File,
+    companyLogo?: Express.Multer.File,
   ) {
     try {
       if (avatar) {
         const avatarUrl = await this.gcpService.uploadFile(avatar);
         signupDto.avatar = avatarUrl;
+      }
+      if (companyLogo) {
+        const companyLogoUrl = await this.gcpService.uploadFile(companyLogo);
+        signupDto.companyLogo = companyLogoUrl;
       }
       const newUser = await this.userService.signUp(signupDto);
       const payloadUser: IUser = {
@@ -38,7 +43,6 @@ export class AuthService {
       };
       await this.logIn(payloadUser, res);
     } catch (err) {
-      console.log(err);
       throw new BadRequestException(err);
     }
   }

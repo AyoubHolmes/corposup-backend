@@ -22,7 +22,6 @@ export class ShippingInformationService {
     @InjectRepository(ShippingInformation)
     private shippingInformationRepository: Repository<ShippingInformation>,
     @Inject(UserService) private readonly userService: UserService,
-    @Inject(StoreService) private readonly storeService: StoreService,
   ) {}
   async create(
     createShippingInformationDto: CreateShippingInformationDto,

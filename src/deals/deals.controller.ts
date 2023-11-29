@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { DealsService } from './deals.service';
-import { CreateDealDto } from './dto/create-deal.dto';
+import { CreateDealDto, CreateMultipleDealsDto } from './dto/create-deal.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt.guard';
 import { Roles } from 'src/user/decorators/role.decorator';
 import { Role } from 'src/user/entities/user.entity';
@@ -14,8 +14,17 @@ export class DealsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createDealDto: CreateDealDto) {
-    return this.dealsService.create(createDealDto);
+  create(@Body() createDealDto: CreateDealDto, @User() user: IUser) {
+    return this.dealsService.create(createDealDto, user.id);
+  }
+
+  @Post('multiple')
+  @UseGuards(JwtAuthGuard)
+  createMultiple(
+    @Body() createMultipeDealDto: CreateMultipleDealsDto,
+    @User() user: IUser,
+  ) {
+    return this.dealsService.createMultiple(createMultipeDealDto, user.id);
   }
 
   @Get()
@@ -29,6 +38,12 @@ export class DealsController {
   @UseGuards(JwtAuthGuard)
   findAllMyDeals(@User() user: IUser) {
     return this.dealsService.findAllMyDeals(user);
+  }
+
+  @Get('vendor/me')
+  @UseGuards(JwtAuthGuard)
+  findAllMyDealsAsVendor(@User() user: IUser) {
+    return this.dealsService.findAllMyDealsAsVendor(user);
   }
 
   @Get(':id')

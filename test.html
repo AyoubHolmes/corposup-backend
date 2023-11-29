@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            padding-bottom: 10px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #fff;
+            margin-top: 6px;
+            position: absolute;
+            /* width: calc(100% - 40px); */
+            width: 80%;
+            padding-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.25rem;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            padding: 14px;
+        }
+
+        .logo {
+            border-radius: 50%;
+        }
+
+        .info-section {
+            display: flex;
+            padding: 5px 16px;
+            justify-content: space-between;
+        }
+
+        .info-column {
+            font-size: 0.625rem;
+            /* Replace with your value */
+        }
+
+        .devis-info {
+            display: flex;
+            justify-content: center;
+            padding: 0 16px;
+        }
+
+        .devis-details {
+            font-size: 0.625rem;
+            /* Replace with your value */
+        }
+
+        .table-container {
+            margin-top: 20px;
+            margin-bottom: 14px;
+            width: 100%;
+            table-layout: fixed;
+            display: flex;
+            justify-content: center;
+
+            /* Replace with your color */
+        }
+
+        .table-border {
+            border-collapse: collapse;
+            border-bottom: 2px solid #000;
+        }
+
+        .table-header {
+            font-size: 0.625rem;
+            /* Replace with your value */
+            color: #fff;
+            text-transform: uppercase;
+            background-color: #4299e1;
+            /* Replace with your color */
+        }
+
+        .table-row {
+            font-size: 0.625rem;
+            /* Replace with your value */
+            background-color: #fff;
+            border-bottom: 1px solid #000;
+            /* Replace with your color */
+        }
+
+        .table-data {
+            padding: 2rem;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+        .total-section {
+            display: flex;
+            justify-content: flex-end;
+            font-size: 0.625rem;
+            /* Replace with your value */
+            padding: 0 24px;
+            margin-bottom: 10px;
+        }
+
+        .total-column {
+            font-weight: bold;
+            width: 24%;
+        }
+
+        .signature-section {
+            margin-top: 40px;
+            padding: 10px;
+        }
+
+        .signature-text {
+            font-size: 0.625rem;
+            /* Replace with your value */
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="logo-container">
+                <img src="./public/assets/images/corposup_logo.jpeg" alt="" height="100" class="logo">
+            </div>
+            <div class="info-section">
+                <div class="info-column">
+                    <div class="font-extrabold text-xs">Company Name</div>
+                    <div>Address 1</div>
+                    <div>Address 2</div>
+                    <div>Email</div>
+                </div>
+                <div class="info-column">
+                    <div class="font-extrabold text-xs">Client: Client Name</div>
+                    <div>Client Address</div>
+                    <div>Client Contact</div>
+                    <div>Client Email</div>
+                </div>
+            </div>
+            <div class="devis-info">
+                <div class="devis-details">
+                    <div class="font-extrabold text-xs">Devis #1</div>
+                    <div>Date: Current Date</div>
+                    <div>Date de validite: Future Date</div>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table-border">
+                    <thead class="table-header">
+                        <tr>
+                            <th class="table-data">Produit</th>
+                            <th class="table-data">Date</th>
+                            <th class="table-data">Qte</th>
+                            <th class="table-data">Unite</th>
+                            <th class="table-data">Prix unitaire</th>
+                            <th class="table-data">TVA</th>
+                            <th class="table-data">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <!-- Repeat this row structure for each deal -->
+                        <tr class="table-row">
+                            <td class="table-data">Product Name</td>
+                            <td class="table-data">Deal Date</td>
+                            <td class="table-data">Quantity</td>
+                            <td class="table-data">Unit</td>
+                            <td class="table-data">Unit Price</td>
+                            <td class="table-data">TVA</td>
+                            <td class="table-data">Amount</td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-data">Product Name</td>
+                            <td class="table-data">Deal Date</td>
+                            <td class="table-data">Quantity</td>
+                            <td class="table-data">Unit</td>
+                            <td class="table-data">Unit Price</td>
+                            <td class="table-data">TVA</td>
+                            <td class="table-data">Amount</td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-data">Product Name</td>
+                            <td class="table-data">Deal Date</td>
+                            <td class="table-data">Quantity</td>
+                            <td class="table-data">Unit</td>
+                            <td class="table-data">Unit Price</td>
+                            <td class="table-data">TVA</td>
+                            <td class="table-data">Amount</td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-data">Product Name</td>
+                            <td class="table-data">Deal Date</td>
+                            <td class="table-data">Quantity</td>
+                            <td class="table-data">Unit</td>
+                            <td class="table-data">Unit Price</td>
+                            <td class="table-data">TVA</td>
+                            <td class="table-data">Amount</td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="table-data">Product Name</td>
+                            <td class="table-data">Deal Date</td>
+                            <td class="table-data">Quantity</td>
+                            <td class="table-data">Unit</td>
+                            <td class="table-data">Unit Price</td>
+                            <td class="table-data">TVA</td>
+                            <td class="table-data">Amount</td>
+                        </tr>
+                        <!-- End of repeated row structure -->
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="total-section">
+                <div class="total-column">Total HT:</div>
+                <div>Total Amount</div>
+            </div>
+            <div class="total-section">
+                <div class="total-column">TVA:</div>
+                <div>TVA Amount</div>
+            </div>
+            <div class="signature-section">
+                <div class="signature-text">Date et signature de client:</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

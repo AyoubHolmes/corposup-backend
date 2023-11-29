@@ -6,6 +6,7 @@ import { registerGoogleDto } from '../../auth.dto';
 import { Role, User } from 'src/user/entities/user.entity';
 import { IUser } from 'src/user/interfaces/user.interface';
 import { UserService } from 'src/user/user.service';
+import { CreateUserDto } from 'src/user/dtos/user.dto';
 
 @Injectable()
 export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -34,12 +35,19 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
         emails[0].value,
       );
       if (!getUser) {
-        const newUser: registerGoogleDto = {
+        const newUser: CreateUserDto = {
           firstname: name.givenName,
           lastname: name.familyName,
           email: emails[0].value,
           avatar: photos[0].value,
           role: Role.USER,
+          contact: '',
+          password: '',
+          companyName: '',
+          companyLogo: '',
+          ice: '',
+          rc: '',
+          cityId: '',
         };
         getUser = await this.userService.signUp(newUser);
       }

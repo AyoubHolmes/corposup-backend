@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -6,6 +7,7 @@ import {
   Length,
 } from 'class-validator';
 import { PERIOD_METRICS } from 'src/shipping-information/entities/shipping-information.entity';
+import { Unit } from '../entities/product.entity';
 
 export class CreateProductDto {
   @IsString()
@@ -31,6 +33,9 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   quantity: number;
+
+  @IsEnum(Unit)
+  unit: Unit;
 
   @IsNotEmpty()
   city: string;

@@ -10,10 +10,11 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { registerGoogleDto, signUpDto } from '../auth/auth.dto';
 import {
+  CreateUserDto,
   UpdateUserCredentialsDto,
   UpdateUserProfileDto,
 } from './dtos/user.dto';
-import { User } from './entities/user.entity';
+import { Role, User } from './entities/user.entity';
 import * as crypto from 'crypto';
 import { IUser } from './interfaces/user.interface';
 
@@ -53,7 +54,7 @@ export class UserService {
       .digest('hex');
   }
 
-  async signUp(signupDto: signUpDto | registerGoogleDto): Promise<User> {
+  async signUp(signupDto: CreateUserDto): Promise<User> {
     try {
       const user: User = this.userRepository.create();
       user.firstname = signupDto.firstname;
@@ -62,9 +63,16 @@ export class UserService {
       if ('password' in signupDto) {
         user.salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(signupDto.password, user.salt);
-      } else if ('avatar' in signupDto) user.avatar = signupDto.avatar;
+      }
+      if ('avatar' in signupDto) user.avatar = signupDto.avatar;
       user.role = signupDto.role;
       user.avatar = signupDto.avatar;
+      if (signupDto.role === Role.VENDOR) {
+        user.companyLogo = signupDto.companyLogo;
+        user.companyName = signupDto.companyName;
+        user.rc = signupDto.rc;
+        user.ice = signupDto.ice;
+      }
       await this.userRepository.save(user);
       delete user.password;
       delete user.salt;

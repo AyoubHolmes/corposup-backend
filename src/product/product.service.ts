@@ -39,14 +39,12 @@ export class ProductService {
     user: IUser,
     pictures: Express.Multer.File[],
   ) {
-    console.log(createProductDto);
     const registeringUser = await this.userService.findOneById(user.id);
     const picturesUrls = await this.gcpService.uploadMultipleFiles(pictures);
     const category = await this.categoryService.findOne(
       createProductDto.categoryId,
     );
     let city;
-    console.log('isUUID(createProductDto.city)', isUUID(createProductDto.city));
     if (isUUID(createProductDto.city))
       city = await this.cityService.findOne(createProductDto.city);
     const store = await this.storeService.findOne(createProductDto.storeId);
@@ -64,7 +62,6 @@ export class ProductService {
           store,
         };
     if (registeringUser && picturesUrls && category && store) {
-      console.log('ENTERED');
       const specs = createProductDto.keys.map((key, index) => ({
         key,
         value: createProductDto.values[index],
@@ -148,10 +145,6 @@ export class ProductService {
   }
 
   async findByCategoriesAndCities(filters: ProductFilters) {
-    console.log(
-      'test',
-      !filters.is48HoureFreeDelivery && !filters.isFreeDelivery,
-    );
     return await this.productRepository.find({
       where:
         !filters.is48HoureFreeDelivery && !filters.isFreeDelivery

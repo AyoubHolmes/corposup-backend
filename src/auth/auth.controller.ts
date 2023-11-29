@@ -5,12 +5,11 @@ import {
   Post,
   Req,
   Res,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { signUpDto } from './auth.dto';
 import { AuthService } from './auth.service';
 import { GoogleOauthGuard } from './guards/google/googleOAuth.guard';
 import { User } from '../user/decorators/user.decorator';
@@ -19,7 +18,8 @@ import { LocalAuthGuard } from './guards/local/local.guard ';
 import { JwtAuthGuard } from './guards/jwt/jwt.guard';
 import { SignInDocs, SignOutDocs, SignUpDocs } from './auth.swagger';
 import { ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { CreateUserDto } from 'src/user/dtos/user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -37,13 +37,28 @@ export class AuthController {
 
   @SignUpDocs()
   @Post('signUp')
-  @UseInterceptors(FileInterceptor('avatar'))
+  // @UseInterceptors(FilesInterceptor('avatar'))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'avatar', maxCount: 1 },
+      { name: 'companyLogo', maxCount: 1 },
+    ]),
+  )
   async signUp(
-    @Body() authCredentialsDto: signUpDto,
-    @UploadedFile() avatar: Express.Multer.File,
+    @Body() authCredentialsDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response,
+    @UploadedFiles()
+    files: {
+      avatar: Express.Multer.File[];
+      companyLogo: Express.Multer.File[];
+    },
   ) {
-    return await this.authService.signUp(authCredentialsDto, res, avatar);
+    return await this.authService.signUp(
+      authCredentialsDto,
+      res,
+      files.avatar[0],
+      files.companyLogo[0],
+    );
   }
 
   @SignInDocs()
