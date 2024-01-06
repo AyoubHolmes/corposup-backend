@@ -14,6 +14,9 @@ import { StoreModule } from './store/store.module';
 import { ShippingInformationModule } from './shipping-information/shipping-information.module';
 import { WhitelistModule } from './whitelist/whitelist.module';
 import { DevisModule } from './devis/devis.module';
+// import { MailerModule } from '@nestjs-modules/mailer';
+
+// import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
@@ -33,6 +36,16 @@ import { DevisModule } from './devis/devis.module';
     ShippingInformationModule,
     WhitelistModule,
     DevisModule,
+    // MailerModule.forRoot({
+    //   transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+    //   template: {
+    //     dir: process.cwd() + '/templates/',
+    //     adapter: new HandlebarsAdapter(),
+    //     options: {
+    //       strict: true,
+    //     },
+    //   },
+    // }),
   ],
   providers: [],
   controllers: [],

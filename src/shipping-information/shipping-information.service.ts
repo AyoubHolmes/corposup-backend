@@ -12,7 +12,6 @@ import {
   ShippingInformation,
 } from './entities/shipping-information.entity';
 import { Repository } from 'typeorm';
-import { StoreService } from 'src/store/store.service';
 import { UserService } from 'src/user/user.service';
 import { IUser } from 'src/user/interfaces/user.interface';
 
